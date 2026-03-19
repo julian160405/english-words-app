@@ -14,7 +14,8 @@ fetch("words.json")
   .then(data => {
 
     palabras = data;
-
+    //empezar de 0
+    localStorage.removeItem("aprendidas");
     // recuperar categoría guardada
     categoriaActual = localStorage.getItem("categoria") || "todas";
 

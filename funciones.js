@@ -1,7 +1,7 @@
 let palabras = [];
 let actual = null;
 let categoriaActual = "todas";
-
+let aprendidas = JSON.parse(localStorage.getItem("aprendidas")) || [];
 // =============================
 // CARGAR PALABRAS
 // =============================
@@ -14,8 +14,7 @@ fetch("words.json")
   .then(data => {
 
     palabras = data;
-    //empezar de 0
-    localStorage.removeItem("aprendidas");
+
     // recuperar categoría guardada
     categoriaActual = localStorage.getItem("categoria") || "todas";
 
@@ -24,33 +23,34 @@ fetch("words.json")
     actualizarContador();
 });
 
+function palabrasDisponibles() {
+  // Solo las de la categoría actual y que no estén aprendidas
+  return palabras.filter(p => 
+    (categoriaActual === "todas" || p.category === categoriaActual) &&
+    !aprendidas.includes(p.english)
+  );
+}
+
 // =============================
 // MOSTRAR NUEVA PALABRA
 // =============================
 
 function nuevaPalabra() {
+  const disponibles = palabrasDisponibles();
 
-  let aprendidas = JSON.parse(localStorage.getItem("aprendidas") || "[]");
-
-  let filtradas = palabras;
-
-  if (categoriaActual !== "todas") {
-    filtradas = palabras.filter(p => p.category === categoriaActual);
-  }
-
-  // quitar las ya aprendidas
-  filtradas = filtradas.filter(p => !aprendidas.includes(p.english));
-
-  if (filtradas.length === 0) {
-    document.getElementById("word").textContent = "¡Aprendiste todas!";
-    document.getElementById("meaning").textContent = "";
+  if (disponibles.length === 0) {
+    document.getElementById("word").innerText = "¡Has aprendido todas las palabras!";
+    document.getElementById("meaning").innerText = "";
+    actual = null;
     return;
   }
 
-  actual = filtradas[Math.floor(Math.random() * filtradas.length)];
+  // Elegir aleatoria
+  const index = Math.floor(Math.random() * disponibles.length);
+  actual = disponibles[index];
 
-  document.getElementById("word").textContent = actual.english;
-  document.getElementById("meaning").textContent = "";
+  document.getElementById("word").innerText = actual.english;
+  document.getElementById("meaning").innerText = "";
 }
 
 // =============================
@@ -66,23 +66,19 @@ function mostrarSignificado() {
 // =============================
 
 function cambiarCategoria(cat) {
-
   categoriaActual = cat;
   localStorage.setItem("categoria", cat);
-
-  document.querySelectorAll(".categoria").forEach(btn => {
-    btn.classList.remove("bg-[#4ac7b6]", "text-black");
-    btn.classList.add("bg-white/10", "text-white");
-  });
-
-  const boton = document.getElementById("cat-" + cat);
-
-  if (boton) {
-    boton.classList.remove("bg-white/10", "text-white");
-    boton.classList.add("bg-[#4ac7b6]", "text-black");
-  }
-
   nuevaPalabra();
+  actualizarContador();
+}
+
+function resetearProgreso() {
+  if (confirm("¿Seguro que quieres reiniciar todo tu progreso?")) {
+    localStorage.removeItem("aprendidas");
+    aprendidas = [];
+    nuevaPalabra();
+    actualizarContador();
+  }
 }
 
 // =============================
@@ -104,18 +100,14 @@ function pronunciar() {
 // =============================
 
 function yaLaSe() {
+    if (!actual) return;
 
-  let aprendidas = JSON.parse(localStorage.getItem("aprendidas")) || [];
+      // Marcar como aprendida
+      aprendidas.push(actual.english);
+      localStorage.setItem("aprendidas", JSON.stringify(aprendidas));
 
-  // evitar repetir la misma palabra
-  if (!aprendidas.includes(actual.english)) {
-    aprendidas.push(actual.english);
-  }
-
-  localStorage.setItem("aprendidas", JSON.stringify(aprendidas));
-
-  actualizarContador();
-  nuevaPalabra();
+      nuevaPalabra();
+    actualizarContador();
 }
 
 function noLaSe() {
@@ -123,19 +115,10 @@ function noLaSe() {
 }
 
 function actualizarContador() {
+  const total = palabras.filter(p => categoriaActual === "todas" || p.category === categoriaActual).length;
+  const aprendidasCat = aprendidas.filter(p => palabras.some(word => word.english === p && (categoriaActual === "todas" || word.category === categoriaActual))).length;
 
-  let aprendidas = JSON.parse(localStorage.getItem("aprendidas") || "[]");
-
-  let total = palabras.length;
-  let cantidad = aprendidas.length;
-
-  document.getElementById("progress").textContent =
-    "Palabras aprendidas: " + cantidad + " / " + total;
-
-  // porcentaje
-  let porcentaje = (cantidad / total) * 100;
-
-  document.getElementById("barraProgreso").style.width = porcentaje + "%";
+  document.getElementById("progress").innerText = `Palabras aprendidas: ${aprendidasCat} / ${total}`;
 }
 
 // =============================

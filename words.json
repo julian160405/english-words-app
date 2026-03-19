@@ -1,0 +1,13 @@
+[
+  { "english": "chair", "spanish": "silla", "categoria": "casa", "nivel": 1 },
+  { "english": "table", "spanish": "mesa", "categoria": "casa", "nivel": 1 },
+  { "english": "window", "spanish": "ventana", "categoria": "casa", "nivel": 1 },
+
+  { "english": "teacher", "spanish": "profesor", "categoria": "universidad", "nivel": 1 },
+  { "english": "exam", "spanish": "examen", "categoria": "universidad", "nivel": 1 },
+  { "english": "classroom", "spanish": "aula", "categoria": "universidad", "nivel": 1 },
+
+  { "english": "keyboard", "spanish": "teclado", "categoria": "tecnologia", "nivel": 1 },
+  { "english": "screen", "spanish": "pantalla", "categoria": "tecnologia", "nivel": 1 },
+  { "english": "computer", "spanish": "computadora", "categoria": "tecnologia", "nivel": 1 }
+]

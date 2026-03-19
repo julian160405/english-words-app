@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="manifest" href="manifest.json">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<title>English Words App</title>
+
+<style id="modo-options">
+select option {
+  background: white;
+  color: black;
+}
+</style>
+
+</head>
+<body id="body" class="bg-[#040c14] text-white min-h-screen flex items-center justify-center transition">
+
+<div class="w-full max-w-sm px-6">
+
+    <div id="card" class="bg-[#0b1723] rounded-2xl shadow-2xl p-8 text-center space-y-6 transition">
+
+        <div class="flex justify-end">
+            <button onclick="cambiarModo()"
+                    class="bg-white/10 px-3 py-1 rounded-lg text-sm hover:bg-white/20 transition">
+                🌙 / ☀️
+            </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3" id="categorias">
+
+        <button onclick="cambiarCategoria('todas')" 
+                id="cat-todas"
+                class="categoria bg-white/10 p-3 rounded-xl text-sm font-semibold transition">
+            📚 Todas
+        </button>
+
+        <button onclick="cambiarCategoria('verbos')" 
+                id="cat-verbos"
+                class="categoria bg-white/10 p-3 rounded-xl text-sm font-semibold transition">
+            🏃 Verbos
+        </button>
+
+        <button onclick="cambiarCategoria('comida')" 
+                id="cat-comida"
+                class="categoria bg-white/10 p-3 rounded-xl text-sm font-semibold transition">
+            🍕 Comida
+        </button>
+
+        <button onclick="cambiarCategoria('trabajo')" 
+                id="cat-trabajo"
+                class="categoria bg-white/10 p-3 rounded-xl text-sm font-semibold transition">
+            💼 Trabajo
+        </button>
+
+        </div>
+
+        <h1 class="text-2xl font-bold text-[#4ac7b6]">
+            Aprender Inglés
+        </h1>
+
+        <!-- contador -->
+        <div id="progress" class="text-sm text-gray-400">
+            Palabras aprendidas: 0
+        </div>
+
+        <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+            <div id="barraProgreso"
+                class="bg-[#4ac7b6] h-3 w-0 transition-all duration-500">
+            </div>
+        </div>
+
+        <!-- palabra -->
+        <div id="word" class="text-4xl font-extrabold">
+            Loading...
+        </div>
+
+        <button onclick="pronunciar()"
+                class="bg-white/10 px-4 py-2 rounded-xl hover:bg-white/20 transition">
+            🔊 Escuchar pronunciación
+        </button>
+
+        <!-- significado -->
+        <div id="meaning" class="text-lg text-gray-300"></div>
+
+        <!-- botones -->
+        <div class="flex flex-col gap-3">
+
+            <button onclick="mostrarSignificado()"
+                    class="bg-[#4ac7b6] text-black font-semibold py-3 rounded-xl">
+                Ver significado
+            </button>
+
+            <button onclick="yaLaSe()"
+                    class="bg-green-500 text-black font-semibold py-3 rounded-xl">
+                Ya la sé
+            </button>
+
+            <button onclick="noLaSe()"
+                    class="bg-red-500 text-black font-semibold py-3 rounded-xl">
+                No la sé
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="funciones.js"></script>
+</body>
+</html>
